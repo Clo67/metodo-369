@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#080C16">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Método 369 | La Fórmula Biológica</title>
+    
+    <!-- PWA Manifest Injection -->
+    <script>
+        const manifestJSON = {
+            "name": "Método 369: Adiós Ansiedad",
+            "short_name": "Método 369",
+            "description": "La Fórmula Biológica para Desactivar la Ansiedad",
+            "start_url": "./index.html",
+            "display": "standalone",
+            "background_color": "#080C16",
+            "theme_color": "#00E676",
+            "icons": [
+                {
+                    "src": "https://cdn-icons-png.flaticon.com/512/3039/3039527.png",
+                    "sizes": "512x512",
+                    "type": "image/png",
+                    "purpose": "any maskable"
+                }
+            ]
+        };
+        const manifestStr = JSON.stringify(manifestJSON);
+        const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(manifestStr);
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = manifestUrl;
+        document.head.appendChild(link);
+    </script>
+
+    <style>
+        :root {
+            --bg-dark: #05080f;
+            --bg-panel: #0a0f1c;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-alert: #ff4d4d;
+            --accent-calm: #00e676;
+            --accent-glow: rgba(0, 230, 118, 0.3);
+            --glass-bg: rgba(10, 15, 28, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --transition-smooth: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 4px;
+            background: var(--accent-calm); width: 0%;
+            z-index: 1000;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+        }
+
+        nav {
+            position: fixed; top: 1rem; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 1rem; padding: 0.75rem 1.5rem;
+            z-index: 100; width: 90%; max-width: 600px; justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-state {
+            display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;
+            padding: 0.25rem 0.75rem; border-radius: 20px;
+            background: rgba(255, 77, 77, 0.1); border: 1px solid var(--accent-alert);
+            color: var(--accent-alert);
+        }
+        .nav-state.calm { background: rgba(0, 230, 118, 0.1); border-color: var(--accent-calm); color: var(--accent-calm); }
+        .state-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-alert); }
+        .nav-state.calm .state-dot { background: var(--accent-calm); }
+
+        section { min-height: 100vh; padding: 6rem 10%; display: flex; flex-direction: column; justify-content: center; max-width: 1200px; margin: 0 auto; }
+
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        .tool-wrapper {
+            background: linear-gradient(180deg, rgba(10, 15, 28, 0.9) 0%, rgba(0, 230, 118, 0.05) 100%);
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            padding: 2.5rem 1.5rem; border-radius: 24px; width: 100%; max-width: 450px;
+            margin: 0 auto; text-align: center;
+        }
+
+        .steps-badges { display: flex; justify-content: center; gap: 0.4rem; margin-bottom: 1.5rem; }
+        .step-badge { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; color: var(--text-muted); }
+        .step-badge.active { color: #fff; border-color: var(--accent-calm); background: rgba(0, 230, 118, 0.2); }
+
+        .breathing-container { position: relative; width: 220px; height: 220px; margin: 0 auto 2rem; display: flex; justify-content: center; align-items: center; }
+        .breathing-circle {
+            position: absolute; width: 80px; height: 80px; border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-calm), transparent);
+            opacity: 0.2; filter: blur(10px);
+            animation: idlePulse 4s infinite ease-in-out;
+        }
+        @keyframes idlePulse { 0%, 100% { transform: scale(1); opacity: 0.2; } 50% { transform: scale(1.4); opacity: 0.4; } }
+
+        .breathing-core {
+            position: absolute; width: 100px; height: 100px; border-radius: 50%;
+            background: var(--bg-dark); border: 2px solid var(--accent-calm);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 10; box-shadow: 0 0 20px rgba(0,230,118,0.2);
+        }
+        .b-phase { font-size: 0.9rem; color: var(--accent-calm); letter-spacing: 1px; font-weight: bold; }
+        .b-timer { font-size: 2.5rem; font-weight: 800; color: #fff; }
+
+        .btn {
+            background: var(--accent-calm); color: #000; border: none; padding: 1rem 2rem;
+            border-radius: 30px; font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; max-width: 280px;
+        }
+
+        #sos-btn {
+            position: fixed; bottom: 1.5rem; right: 1.5rem;
+            background: rgba(255, 77, 77, 0.15); border: 1px solid var(--accent-alert);
+            color: var(--accent-alert); padding: 0.8rem 1.2rem; border-radius: 50px; font-weight: bold; z-index: 1000;
+        }
+
+        @media (max-width: 600px) {
+            section { padding: 4rem 1.5rem; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+    <div id="progress-bar"></div>
+
+    <nav class="glass">
+        <div style="font-weight: 800; font-size: 0.9rem;">MÉTODO 369</div>
+        <div class="nav-state" id="global-state">
+            <div class="state-dot"></div>
+            <span id="state-text">Simpaticotonía</span>
+        </div>
+    </nav>
+
+    <section id="hero" class="fade-in">
+        <h1 style="text-align: center; margin-bottom: 1.5rem;">Tu Ansiedad es un <span style="color: var(--accent-calm)">Programa de Supervivencia</span>.</h1>
+        <p style="text-align: center; color: var(--text-muted);">No luches contra ella. Entiende su lenguaje biológico y recupera el mando de tu sistema nervioso.</p>
+        <div style="display: flex; justify-content: center; margin-top: 2rem;">
+            <button class="btn" onclick="document.getElementById('metodo-369').scrollIntoView({behavior: 'smooth'})">Empezar Práctica</button>
+        </div>
+    </section>
+
+    <section id="metodo-369" class="fade-in">
+        <h2 style="text-align: center; margin-bottom: 2rem;">El Interruptor Biológico</h2>
+        <div class="tool-wrapper glass">
+            <div class="steps-badges">
+                <span class="step-badge" id="badge-inhala">Inhala (3s)</span>
+                <span class="step-badge" id="badge-reten">Retén (6s)</span>
+                <span class="step-badge" id="badge-exhala">Exhala (9s)</span>
+            </div>
+            <div class="breathing-container">
+                <div class="breathing-circle" id="b-circle-bg"></div>
+                <div class="breathing-core">
+                    <div class="b-phase" id="b-phase">Listo</div>
+                    <div class="b-timer" id="b-timer">0</div>
+                </div>
+            </div>
+            <button class="btn" id="btn-369" onclick="toggleBreathing()">Iniciar Ciclo 3-6-9</button>
+        </div>
+    </section>
+
+    <button id="sos-btn" onclick="alert('Respira: Inhala 4, exhala 8. Estás a salvo.')">🚨 SOS</button>
+
+    <script>
+        // Visuals
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, state = 'alert';
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.onresize = resize;
+        resize();
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 8, 15, 0.1)';
+            ctx.fillRect(0,0,width,height);
+            ctx.fillStyle = state === 'alert' ? '#ff4d4d22' : '#00e67622';
+            for(let i=0; i<30; i++) {
+                ctx.beginPath();
+                ctx.arc(Math.random()*width, Math.random()*height, 2, 0, Math.PI*2);
+                ctx.fill();
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Scroll
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => e.isIntersecting && e.target.classList.add('visible'));
+        }, {threshold: 0.1});
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Breathing Logic
+        let breathing = false, timer;
+        function toggleBreathing() {
+            const btn = document.getElementById('btn-369');
+            const stateText = document.getElementById('state-text');
+            const stateBox = document.getElementById('global-state');
+            
+            if(!breathing) {
+                breathing = true;
+                state = 'calm';
+                btn.textContent = "Detener";
+                btn.style.background = "#333"; btn.style.color = "#fff";
+                stateText.textContent = "Vagotonía";
+                stateBox.classList.add('calm');
+                startCycle();
+            } else {
+                location.reload(); // Simple reset
+            }
+        }
+
+        function startCycle() {
+            const phaseEl = document.getElementById('b-phase');
+            const timerEl = document.getElementById('b-timer');
+            const circle = document.getElementById('b-circle-bg');
+            let t = 0;
+
+            const run = () => {
+                if(t < 3) { // Inhala
+                    phaseEl.textContent = "Inhala";
+                    timerEl.textContent = 3 - t;
+                    circle.style.transform = `scale(${1 + (t+1)*0.5})`;
+                    updateBadges('inhala');
+                } else if(t < 9) { // Reten
+                    phaseEl.textContent = "Retén";
+                    timerEl.textContent = 9 - t;
+                    updateBadges('reten');
+                } else if(t < 18) { // Exhala
+                    phaseEl.textContent = "Exhala";
+                    timerEl.textContent = 18 - t;
+                    circle.style.transform = `scale(${2.5 - (t-8)*0.15})`;
+                    updateBadges('exhala');
+                }
+                t++;
+                if(t >= 18) t = 0;
+            };
+            run();
+            timer = setInterval(run, 1000);
+        }
+
+        function updateBadges(p) {
+            document.querySelectorAll('.step-badge').forEach(b => b.classList.remove('active'));
+            document.getElementById('badge-' + p).classList.add('active');
+        }
+
+        // Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Creamos un Service Worker básico en línea para permitir la instalación
+                const swCode = `
+                    self.addEventListener('install', e => self.skipWaiting());
+                    self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
+                `;
+                const blob = new Blob([swCode], {type: 'text/javascript'});
+                const url = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(url).catch(() => {
+                    console.log("PWA: Registro SW saltado en modo preview.");
+                });
+            });
+        }
+    </script>
+</body>
+</html>
