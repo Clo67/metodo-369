@@ -1,300 +1,1491 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#080C16">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Método 369 | La Fórmula Biológica</title>
-    
-    <!-- PWA Manifest Injection -->
-    <script>
-        const manifestJSON = {
-            "name": "Método 369: Adiós Ansiedad",
-            "short_name": "Método 369",
-            "description": "La Fórmula Biológica para Desactivar la Ansiedad",
-            "start_url": "./index.html",
-            "display": "standalone",
-            "background_color": "#080C16",
-            "theme_color": "#00E676",
-            "icons": [
-                {
-                    "src": "https://cdn-icons-png.flaticon.com/512/3039/3039527.png",
-                    "sizes": "512x512",
-                    "type": "image/png",
-                    "purpose": "any maskable"
-                }
-            ]
-        };
-        const manifestStr = JSON.stringify(manifestJSON);
-        const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(manifestStr);
-        const link = document.createElement('link');
-        link.rel = 'manifest';
-        link.href = manifestUrl;
-        document.head.appendChild(link);
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Método 369 | La Fórmula Biológica para Desactivar la Ansiedad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05080f;
+  --bg2: #080d18;
+  --alert: #e84040;
+  --calm: #0ecf9c;
+  --blue: #3b82f6;
+  --text: #eef2f8;
+  --muted: #6b7a99;
+  --glass: rgba(8,13,24,0.75);
+  --border: rgba(255,255,255,0.08);
+  --accent: var(--alert);
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
 
-    <style>
-        :root {
-            --bg-dark: #05080f;
-            --bg-panel: #0a0f1c;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-alert: #ff4d4d;
-            --accent-calm: #00e676;
-            --accent-glow: rgba(0, 230, 118, 0.3);
-            --glass-bg: rgba(10, 15, 28, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --transition-smooth: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html{scroll-behavior:smooth;}
 
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-weight:300;
+  line-height:1.7;
+  overflow-x:hidden;
+}
 
-        /* Canvas Background */
-        #bg-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
-            opacity: 0.8;
-            pointer-events: none;
-        }
+/* CANVAS BG */
+#bg-canvas{
+  position:fixed;top:0;left:0;
+  width:100%;height:100%;
+  z-index:0;pointer-events:none;
+}
 
-        #progress-bar {
-            position: fixed; top: 0; left: 0; height: 4px;
-            background: var(--accent-calm); width: 0%;
-            z-index: 1000;
-        }
+/* PROGRESS */
+#pbar{
+  position:fixed;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--alert),var(--calm));
+  width:0%;z-index:9999;transition:width .2s;
+}
 
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-        }
+/* NAV */
+nav{
+  position:fixed;top:0;width:100%;
+  padding:1.2rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;
+  z-index:900;
+  background:linear-gradient(to bottom,rgba(5,8,15,0.95) 0%,transparent 100%);
+}
+.logo{
+  font-family:var(--font-display);
+  font-weight:800;font-size:1.1rem;
+  letter-spacing:.15em;
+}
+.logo span{color:var(--calm);}
+.state-pill{
+  padding:5px 14px;border-radius:100px;
+  border:1px solid var(--accent);
+  color:var(--accent);
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  transition:all .6s;
+}
 
-        nav {
-            position: fixed; top: 1rem; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 1rem; padding: 0.75rem 1.5rem;
-            z-index: 100; width: 90%; max-width: 600px; justify-content: space-between;
-            align-items: center;
-        }
+/* SOS FAB */
+#sos-btn{
+  position:fixed;bottom:2rem;right:1.5rem;
+  width:56px;height:56px;border-radius:50%;
+  background:var(--alert);color:white;
+  border:none;cursor:pointer;z-index:9000;
+  font-family:var(--font-display);font-weight:800;font-size:.75rem;
+  letter-spacing:.05em;
+  box-shadow:0 0 30px rgba(232,64,64,.5);
+  transition:.3s;
+}
+#sos-btn:hover{transform:scale(1.08);}
 
-        .nav-state {
-            display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;
-            padding: 0.25rem 0.75rem; border-radius: 20px;
-            background: rgba(255, 77, 77, 0.1); border: 1px solid var(--accent-alert);
-            color: var(--accent-alert);
-        }
-        .nav-state.calm { background: rgba(0, 230, 118, 0.1); border-color: var(--accent-calm); color: var(--accent-calm); }
-        .state-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-alert); }
-        .nav-state.calm .state-dot { background: var(--accent-calm); }
+/* SOS OVERLAY */
+#sos-overlay{
+  display:none;position:fixed;inset:0;z-index:9500;
+  background:rgba(5,8,15,.97);
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;
+}
+#sos-overlay.open{display:flex;}
+.sos-circle{
+  width:180px;height:180px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  margin:2rem auto;position:relative;
+}
+.sos-inner{
+  width:50px;height:50px;border-radius:50%;
+  background:var(--calm);opacity:.8;
+  transition:transform .5s ease-in-out;
+}
+.sos-num{position:absolute;font-size:3rem;font-family:var(--font-display);font-weight:800;}
 
-        section { min-height: 100vh; padding: 6rem 10%; display: flex; flex-direction: column; justify-content: center; max-width: 1200px; margin: 0 auto; }
+/* SECTIONS */
+section{
+  position:relative;z-index:1;
+  min-height:100vh;
+  padding:7rem 1.5rem 4rem;
+  display:flex;flex-direction:column;justify-content:center;
+  max-width:660px;margin:0 auto;
+}
 
-        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
+/* HERO */
+#hero{min-height:100vh;justify-content:center;}
+.overline{
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);font-weight:700;margin-bottom:1.5rem;
+  opacity:0;animation:fadeUp .8s .3s forwards;
+}
+.hero-title{
+  font-family:var(--font-display);
+  font-size:clamp(2.6rem,7vw,4.2rem);
+  font-weight:800;line-height:1.05;
+  margin-bottom:1.5rem;
+  opacity:0;animation:fadeUp .9s .5s forwards;
+}
+.hero-title em{
+  font-style:normal;color:var(--alert);
+  transition:color .6s;
+}
+.hero-lead{
+  font-size:1.05rem;color:var(--muted);
+  max-width:500px;margin-bottom:2.5rem;
+  opacity:0;animation:fadeUp .9s .7s forwards;
+}
+.orb-wrap{
+  display:flex;gap:1rem;align-items:center;
+  margin-bottom:2.5rem;
+  opacity:0;animation:fadeUp .9s .9s forwards;
+}
+.state-orb{
+  width:14px;height:14px;border-radius:50%;
+  background:var(--alert);
+  box-shadow:0 0 16px var(--alert);
+  animation:pulse-orb 1.4s ease-in-out infinite;
+  transition:all .6s;
+}
+@keyframes pulse-orb{
+  0%,100%{box-shadow:0 0 16px var(--alert);}
+  50%{box-shadow:0 0 32px var(--alert),0 0 6px var(--alert);}
+}
+.state-label{font-size:.8rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
 
-        .tool-wrapper {
-            background: linear-gradient(180deg, rgba(10, 15, 28, 0.9) 0%, rgba(0, 230, 118, 0.05) 100%);
-            border: 1px solid rgba(0, 230, 118, 0.2);
-            padding: 2.5rem 1.5rem; border-radius: 24px; width: 100%; max-width: 450px;
-            margin: 0 auto; text-align: center;
-        }
+/* CARDS */
+.card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:2rem;
+  backdrop-filter:blur(16px);
+  margin-bottom:1.5rem;
+  opacity:0;transform:translateY(28px);
+  transition:opacity .7s ease-out, transform .7s ease-out;
+}
+.card.vis{opacity:1;transform:translateY(0);}
+.card-label{
+  font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--calm);font-weight:700;margin-bottom:.8rem;
+}
+.card h3{
+  font-family:var(--font-display);font-size:1.3rem;font-weight:700;
+  margin-bottom:.8rem;
+}
+.card p{color:#9aaabf;font-size:.95rem;}
 
-        .steps-badges { display: flex; justify-content: center; gap: 0.4rem; margin-bottom: 1.5rem; }
-        .step-badge { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; color: var(--text-muted); }
-        .step-badge.active { color: #fff; border-color: var(--accent-calm); background: rgba(0, 230, 118, 0.2); }
+/* CHAPTER HEADERS */
+.ch-header{
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem,5vw,2.8rem);
+  font-weight:800;line-height:1.1;
+  margin-bottom:.5rem;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .7s, transform .7s;
+}
+.ch-header.vis{opacity:1;transform:translateY(0);}
+.ch-sub{
+  font-size:.95rem;color:var(--muted);margin-bottom:2rem;
+  opacity:0;transition:opacity .7s .15s, transform .7s .15s;
+  transform:translateY(16px);
+}
+.ch-sub.vis{opacity:1;transform:translateY(0);}
+.ch-num{
+  font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--calm);font-weight:700;margin-bottom:.6rem;
+  opacity:0;transition:opacity .5s;
+}
+.ch-num.vis{opacity:1;}
 
-        .breathing-container { position: relative; width: 220px; height: 220px; margin: 0 auto 2rem; display: flex; justify-content: center; align-items: center; }
-        .breathing-circle {
-            position: absolute; width: 80px; height: 80px; border-radius: 50%;
-            background: radial-gradient(circle, var(--accent-calm), transparent);
-            opacity: 0.2; filter: blur(10px);
-            animation: idlePulse 4s infinite ease-in-out;
-        }
-        @keyframes idlePulse { 0%, 100% { transform: scale(1); opacity: 0.2; } 50% { transform: scale(1.4); opacity: 0.4; } }
+/* QUIZ */
+.quiz-q{
+  font-family:var(--font-display);font-size:1.1rem;font-weight:700;
+  margin-bottom:1.2rem;line-height:1.3;
+}
+.quiz-step-label{
+  font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:1.5rem;
+}
+.q-opt{
+  display:block;width:100%;padding:.85rem 1.1rem;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  color:var(--text);border-radius:12px;
+  margin-bottom:.6rem;text-align:left;cursor:pointer;
+  font-family:var(--font-body);font-size:.9rem;font-weight:300;
+  transition:.25s;
+}
+.q-opt:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);}
+.q-opt.selected{
+  background:rgba(14,207,156,.08);
+  border-color:var(--calm);color:var(--calm);
+}
+.quiz-progress{
+  height:2px;background:rgba(255,255,255,.08);
+  border-radius:2px;margin-bottom:2rem;overflow:hidden;
+}
+.quiz-progress-fill{
+  height:100%;background:var(--calm);
+  transition:width .4s ease;border-radius:2px;
+}
+.result-card{
+  display:none;padding:1.5rem;
+  background:rgba(14,207,156,.06);
+  border:1px solid rgba(14,207,156,.25);
+  border-radius:16px;margin-top:1.5rem;
+}
+.result-card.show{display:block;}
+.result-title{
+  font-family:var(--font-display);font-size:1.15rem;font-weight:700;
+  color:var(--calm);margin-bottom:.6rem;
+}
+.result-desc{font-size:.9rem;color:#9aaabf;line-height:1.7;}
+.result-action{
+  margin-top:1rem;font-size:.8rem;
+  color:var(--calm);cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px;
+}
 
-        .breathing-core {
-            position: absolute; width: 100px; height: 100px; border-radius: 50%;
-            background: var(--bg-dark); border: 2px solid var(--accent-calm);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10; box-shadow: 0 0 20px rgba(0,230,118,0.2);
-        }
-        .b-phase { font-size: 0.9rem; color: var(--accent-calm); letter-spacing: 1px; font-weight: bold; }
-        .b-timer { font-size: 2.5rem; font-weight: 800; color: #fff; }
+/* DHS GRID */
+.dhs-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1rem;margin-top:1.5rem;
+}
+.dhs-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:14px;padding:1.2rem;
+}
+.dhs-i{
+  font-family:var(--font-display);font-size:2rem;font-weight:800;
+  color:var(--alert);opacity:.4;margin-bottom:.4rem;line-height:1;
+}
+.dhs-card h4{
+  font-family:var(--font-display);font-size:.9rem;font-weight:700;
+  margin-bottom:.3rem;
+}
+.dhs-card p{font-size:.8rem;color:var(--muted);}
 
-        .btn {
-            background: var(--accent-calm); color: #000; border: none; padding: 1rem 2rem;
-            border-radius: 30px; font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; max-width: 280px;
-        }
+/* NERVOUS SYSTEM VIZ */
+.nervous-viz{
+  position:relative;height:220px;margin:2rem 0;
+  display:flex;align-items:center;justify-content:center;
+}
+.ns-node{
+  position:absolute;width:80px;height:80px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;font-size:.65rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.03);
+  cursor:pointer;transition:.3s;
+}
+.ns-node:hover{background:rgba(255,255,255,.08);}
+.ns-node.cerebro{top:10px;left:50%;transform:translateX(-50%);}
+.ns-node.psique{bottom:10px;left:15%;}
+.ns-node.organo{bottom:10px;right:15%;}
+.ns-line{
+  position:absolute;background:rgba(255,255,255,.1);
+  height:1px;transform-origin:left center;
+  transition:.5s;
+}
+.ns-tooltip{
+  position:absolute;bottom:-2rem;left:50%;transform:translateX(-50%);
+  font-size:.75rem;color:var(--calm);white-space:nowrap;
+  opacity:0;transition:.3s;pointer-events:none;
+}
+.ns-node:hover .ns-tooltip{opacity:1;}
 
-        #sos-btn {
-            position: fixed; bottom: 1.5rem; right: 1.5rem;
-            background: rgba(255, 77, 77, 0.15); border: 1px solid var(--accent-alert);
-            color: var(--accent-alert); padding: 0.8rem 1.2rem; border-radius: 50px; font-weight: bold; z-index: 1000;
-        }
+/* STATES TOGGLE */
+.states-toggle{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;border-radius:16px;overflow:hidden;
+  border:1px solid var(--border);margin-top:1.5rem;
+}
+.state-col{
+  padding:1.5rem;transition:.4s;cursor:pointer;
+}
+.state-col.sym{border-right:1px solid var(--border);}
+.state-col.sym.active{background:rgba(232,64,64,.08);}
+.state-col.vag.active{background:rgba(14,207,156,.08);}
+.state-col-title{
+  font-family:var(--font-display);font-size:.85rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;
+}
+.state-sym .state-col-title{color:var(--alert);}
+.state-vag .state-col-title{color:var(--calm);}
+.state-item{
+  font-size:.82rem;color:var(--muted);
+  padding:.3rem 0;border-bottom:1px solid var(--border);
+}
+.state-item:last-child{border-bottom:none;}
 
-        @media (max-width: 600px) {
-            section { padding: 4rem 1.5rem; }
-            h1 { font-size: 2rem; }
-        }
-    </style>
+/* BREATHING */
+.breath-section{text-align:center;}
+.breath-ring{
+  width:200px;height:200px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  margin:2rem auto;position:relative;
+}
+.breath-ring::before{
+  content:'';position:absolute;inset:-12px;border-radius:50%;
+  border:1px solid rgba(14,207,156,.15);
+  animation:ring-pulse 3s ease-in-out infinite;
+}
+@keyframes ring-pulse{
+  0%,100%{transform:scale(1);opacity:.3;}
+  50%{transform:scale(1.04);opacity:.7;}
+}
+.breath-ball{
+  width:64px;height:64px;background:var(--calm);
+  border-radius:50%;opacity:.7;
+  transition:transform 1s linear;
+}
+.breath-count{position:absolute;font-size:3.5rem;font-family:var(--font-display);font-weight:800;}
+.breath-phase{
+  font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;margin-bottom:1rem;color:var(--calm);
+  min-height:1.2em;
+}
+.breath-cycles{
+  font-size:.8rem;color:var(--muted);margin-bottom:1.5rem;
+}
+.breath-done{
+  display:none;padding:1rem;
+  background:rgba(14,207,156,.08);
+  border:1px solid rgba(14,207,156,.2);
+  border-radius:12px;margin-top:1rem;
+  font-size:.9rem;color:var(--calm);
+}
+
+/* PROFILES */
+.profiles-tabs{
+  display:flex;gap:.5rem;margin-bottom:1.5rem;
+  flex-wrap:wrap;
+}
+.ptab{
+  padding:7px 16px;border-radius:100px;
+  border:1px solid var(--border);
+  background:transparent;color:var(--muted);
+  font-size:.78rem;font-weight:500;cursor:pointer;
+  font-family:var(--font-body);transition:.25s;
+}
+.ptab.active{
+  border-color:var(--calm);color:var(--calm);
+  background:rgba(14,207,156,.08);
+}
+.profile-panel{display:none;}
+.profile-panel.active{display:block;}
+.profile-header{
+  font-family:var(--font-display);font-size:1.2rem;font-weight:700;
+  margin-bottom:.5rem;
+}
+.profile-body-area{
+  font-size:.8rem;color:var(--calm);
+  margin-bottom:1rem;letter-spacing:.05em;
+  text-transform:uppercase;font-weight:700;
+}
+.profile-thought{
+  background:rgba(255,255,255,.03);
+  border-left:3px solid var(--calm);
+  padding:.8rem 1rem;border-radius:0 8px 8px 0;
+  font-size:.9rem;color:#9aaabf;font-style:italic;
+  margin-bottom:1rem;
+}
+.symptom-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem;}
+.stag{
+  padding:4px 12px;border-radius:100px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+  font-size:.75rem;color:var(--muted);
+}
+
+/* PROTOCOL STEPS */
+.proto-steps{counter-reset:step;}
+.proto-step{
+  display:flex;gap:1.2rem;align-items:flex-start;
+  padding:1.2rem 0;border-bottom:1px solid var(--border);
+  opacity:0;transform:translateX(-16px);
+  transition:all .5s;
+}
+.proto-step.vis{opacity:1;transform:translateX(0);}
+.proto-step:last-child{border-bottom:none;}
+.step-num{
+  font-family:var(--font-display);font-size:1.6rem;font-weight:800;
+  color:var(--calm);opacity:.4;min-width:32px;line-height:1;
+}
+.step-body h4{
+  font-family:var(--font-display);font-size:.95rem;font-weight:700;
+  margin-bottom:.3rem;
+}
+.step-body p{font-size:.85rem;color:var(--muted);}
+
+/* ACCORDION */
+.acc-wrap{margin-top:1rem;}
+.acc-item{border-bottom:1px solid var(--border);}
+.acc-trigger{
+  width:100%;padding:1.1rem 0;
+  display:flex;justify-content:space-between;align-items:center;
+  background:none;border:none;color:var(--text);
+  font-family:var(--font-display);font-size:.95rem;font-weight:700;
+  cursor:pointer;text-align:left;
+}
+.acc-icon{
+  width:24px;height:24px;border-radius:50%;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;color:var(--muted);flex-shrink:0;
+  transition:.3s;
+}
+.acc-body{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease,padding .4s ease;
+  font-size:.9rem;color:#7a8aaa;line-height:1.8;
+}
+.acc-item.open .acc-body{max-height:600px;padding-bottom:1.2rem;}
+.acc-item.open .acc-icon{transform:rotate(45deg);border-color:var(--calm);color:var(--calm);}
+
+/* COMMITMENT */
+.commit-area{margin-top:1rem;}
+.commit-input{
+  width:100%;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);border-radius:12px;
+  padding:1rem;color:var(--text);
+  font-family:var(--font-body);font-size:.9rem;
+  resize:none;min-height:90px;outline:none;
+  transition:.3s;
+}
+.commit-input:focus{border-color:rgba(14,207,156,.4);}
+.commit-signed{
+  display:none;padding:1rem;
+  background:rgba(14,207,156,.06);
+  border:1px solid rgba(14,207,156,.2);
+  border-radius:12px;margin-top:1rem;
+  text-align:center;
+}
+.commit-signed p{font-size:.9rem;color:var(--calm);}
+
+/* 21 DAYS */
+.week-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap:6px;margin-top:1rem;
+}
+.day-dot{
+  aspect-ratio:1;border-radius:6px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;color:var(--muted);cursor:pointer;
+  transition:.25s;
+}
+.day-dot:hover{background:rgba(14,207,156,.1);border-color:var(--calm);}
+.day-dot.done{background:rgba(14,207,156,.15);border-color:rgba(14,207,156,.4);color:var(--calm);}
+.week-label{
+  font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-top:1rem;margin-bottom:.4rem;
+}
+
+/* ROUTE */
+.route-items{margin-top:1.5rem;}
+.route-item{
+  display:flex;gap:1.2rem;align-items:flex-start;
+  padding:1rem 0;border-bottom:1px solid var(--border);
+}
+.route-item:last-child{border-bottom:none;}
+.route-dot{
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid var(--border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:700;color:var(--calm);
+  font-family:var(--font-display);
+}
+.route-item h4{
+  font-family:var(--font-display);font-size:.9rem;font-weight:700;
+  margin-bottom:.2rem;
+}
+.route-item p{font-size:.82rem;color:var(--muted);}
+
+/* TYPEWRITER */
+#tw-text{
+  font-family:var(--font-display);
+  font-size:clamp(1.4rem,4vw,2rem);
+  font-weight:700;line-height:1.3;
+  min-height:4em;
+}
+.tw-line{opacity:0;transform:translateY(8px);transition:.5s;}
+.tw-line.tw-vis{opacity:1;transform:translateY(0);}
+
+/* BTN */
+.btn{
+  display:inline-block;padding:.9rem 2rem;
+  border-radius:100px;border:none;cursor:pointer;
+  font-family:var(--font-display);font-size:.85rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;transition:.3s;
+}
+.btn-primary{
+  background:var(--calm);color:#000;
+}
+.btn-primary:hover{opacity:.88;transform:translateY(-1px);}
+.btn-ghost{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-ghost:hover{border-color:var(--calm);color:var(--calm);}
+
+/* DIVIDER */
+.divider{
+  width:40px;height:3px;border-radius:2px;
+  background:var(--calm);margin:1.5rem 0;opacity:.5;
+}
+
+/* DISCLAIMER */
+.disclaimer{
+  font-size:.72rem;color:var(--muted);
+  border:1px solid var(--border);border-radius:10px;
+  padding:.8rem 1rem;line-height:1.7;margin-top:2rem;
+}
+
+/* QUOTE */
+blockquote{
+  border-left:3px solid var(--calm);
+  padding:.8rem 1.2rem;
+  margin:1.2rem 0;
+  font-size:.95rem;font-style:italic;
+  color:#8899bb;
+}
+blockquote strong{color:var(--text);font-style:normal;}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+@media(max-width:480px){
+  .dhs-grid{grid-template-columns:1fr;}
+  .states-toggle{grid-template-columns:1fr;}
+  .states-toggle .state-col.sym{border-right:none;border-bottom:1px solid var(--border);}
+}
+</style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
-    <div id="progress-bar"></div>
+<div id="pbar"></div>
+<canvas id="bg-canvas"></canvas>
 
-    <nav class="glass">
-        <div style="font-weight: 800; font-size: 0.9rem;">MÉTODO 369</div>
-        <div class="nav-state" id="global-state">
-            <div class="state-dot"></div>
-            <span id="state-text">Simpaticotonía</span>
+<nav>
+  <div class="logo">MÉT<span>369</span></div>
+  <div class="state-pill" id="state-pill">Simpaticotonía</div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <p class="overline">La Fórmula Biológica</p>
+  <h1 class="hero-title">Tu ansiedad no<br>es un <em id="hero-em">error</em>.<br>Es biología.</h1>
+  <p class="hero-lead">Si sentís que la ansiedad aparece sola, sin permiso y sin causa aparente — tu cuerpo no está roto. Está haciendo exactamente lo que fue diseñado para hacer: sobrevivir.</p>
+  <div class="orb-wrap">
+    <div class="state-orb" id="hero-orb"></div>
+    <span class="state-label" id="hero-state-label">Estado actual: Simpaticotonía</span>
+  </div>
+  <button class="btn btn-primary" onclick="scrollTo('#diagnostico')">Descubrí tu perfil biológico</button>
+</section>
+
+<!-- ═══ DIAGNÓSTICO ═══ -->
+<section id="diagnostico">
+  <div class="ch-num reveal-el">Capítulo 2 · Detective Biológico</div>
+  <h2 class="ch-header reveal-el">Descodificando<br>tu mensaje</h2>
+  <p class="ch-sub reveal-el">Tu síntoma es el mapa del tesoro. Cada forma de ansiedad habla de un conflicto biológico específico.</p>
+
+  <div class="card reveal-el" id="quiz-card">
+    <div class="quiz-progress"><div class="quiz-progress-fill" id="qpfill" style="width:0%"></div></div>
+    <div id="quiz-container"></div>
+  </div>
+</section>
+
+<!-- ═══ CAPÍTULO 1 ═══ -->
+<section id="paradigma">
+  <div class="ch-num reveal-el">Capítulo 1 · El Cambio de Paradigma</div>
+  <h2 class="ch-header reveal-el">Tu cuerpo<br>te protege</h2>
+  <p class="ch-sub reveal-el">La ansiedad no es una enfermedad. Es un programa especial biológico y sensato diseñado para salvarte la vida.</p>
+
+  <div class="card reveal-el">
+    <div class="card-label">El problema real</div>
+    <h3>Simpaticotonía: el estado de guerra constante</h3>
+    <p>Tu sistema nervioso autónomo tiene dos modos. Uno es el modo "lucha o huida" (Simpaticotonía) y el otro es el modo "descanso y reparación" (Vagotonía). La ansiedad crónica te mantiene atrapado en el primero.</p>
+    <div class="states-toggle" style="margin-top:1.5rem;">
+      <div class="state-col sym state-sym" id="col-sym" onclick="toggleStateCol('sym')">
+        <div class="state-col-title">⚡ Simpaticotonía</div>
+        <div class="state-item">Taquicardia constante</div>
+        <div class="state-item">Tensión muscular</div>
+        <div class="state-item">Mandíbula apretada</div>
+        <div class="state-item">Hombros rígidos</div>
+        <div class="state-item">Amígdala hiperexcitada</div>
+        <div class="state-item">Rumia mental sin parar</div>
+      </div>
+      <div class="state-col vag state-vag" id="col-vag" onclick="toggleStateCol('vag')">
+        <div class="state-col-title">🌿 Vagotonía</div>
+        <div class="state-item">Ritmo cardíaco estable</div>
+        <div class="state-item">Músculos relajados</div>
+        <div class="state-item">Digestión activa</div>
+        <div class="state-item">Sueño reparador</div>
+        <div class="state-item">Mente en calma</div>
+        <div class="state-item">Reparación celular</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal-el">
+    <div class="card-label">La neurociencia del miedo</div>
+    <h3>El Lazo Neuronal Mente–Cuerpo</h3>
+    <p style="margin-bottom:1rem;">Cuando vivís un shock emocional intenso, se establece un circuito de miedo entre tres componentes. Tocá cada uno para entender su rol.</p>
+    <div class="nervous-viz" id="ns-viz">
+      <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;" id="ns-svg"></svg>
+      <div class="ns-node cerebro" onclick="showNsInfo('cerebro')">
+        <div>
+          <div style="font-size:1.2rem;margin-bottom:.2rem;">🧠</div>
+          Cerebro
+          <div class="ns-tooltip" id="tt-cerebro">Amígdala + tronco encefálico</div>
         </div>
-    </nav>
-
-    <section id="hero" class="fade-in">
-        <h1 style="text-align: center; margin-bottom: 1.5rem;">Tu Ansiedad es un <span style="color: var(--accent-calm)">Programa de Supervivencia</span>.</h1>
-        <p style="text-align: center; color: var(--text-muted);">No luches contra ella. Entiende su lenguaje biológico y recupera el mando de tu sistema nervioso.</p>
-        <div style="display: flex; justify-content: center; margin-top: 2rem;">
-            <button class="btn" onclick="document.getElementById('metodo-369').scrollIntoView({behavior: 'smooth'})">Empezar Práctica</button>
+      </div>
+      <div class="ns-node psique" onclick="showNsInfo('psique')">
+        <div>
+          <div style="font-size:1.2rem;margin-bottom:.2rem;">💭</div>
+          Psique
+          <div class="ns-tooltip" id="tt-psique">Emoción del shock original</div>
         </div>
-    </section>
-
-    <section id="metodo-369" class="fade-in">
-        <h2 style="text-align: center; margin-bottom: 2rem;">El Interruptor Biológico</h2>
-        <div class="tool-wrapper glass">
-            <div class="steps-badges">
-                <span class="step-badge" id="badge-inhala">Inhala (3s)</span>
-                <span class="step-badge" id="badge-reten">Retén (6s)</span>
-                <span class="step-badge" id="badge-exhala">Exhala (9s)</span>
-            </div>
-            <div class="breathing-container">
-                <div class="breathing-circle" id="b-circle-bg"></div>
-                <div class="breathing-core">
-                    <div class="b-phase" id="b-phase">Listo</div>
-                    <div class="b-timer" id="b-timer">0</div>
-                </div>
-            </div>
-            <button class="btn" id="btn-369" onclick="toggleBreathing()">Iniciar Ciclo 3-6-9</button>
+      </div>
+      <div class="ns-node organo" onclick="showNsInfo('organo')">
+        <div>
+          <div style="font-size:1.2rem;margin-bottom:.2rem;">❤️</div>
+          Órgano
+          <div class="ns-tooltip" id="tt-organo">Síntoma físico manifestado</div>
         </div>
-    </section>
+      </div>
+    </div>
+    <div id="ns-info" style="font-size:.85rem;color:var(--muted);min-height:2.5rem;text-align:center;transition:.3s;"></div>
+  </div>
 
-    <button id="sos-btn" onclick="alert('Respira: Inhala 4, exhala 8. Estás a salvo.')">🚨 SOS</button>
+  <div class="card reveal-el">
+    <div class="card-label">Re-etiquetado biológico</div>
+    <h3>Tu síntoma no es tu enemigo</h3>
+    <blockquote>"Tu cuerpo se convierte en el mensajero perfecto de una percepción que tu mente consciente ha olvidado o ignorado."</blockquote>
+    <p>En lugar de luchar contra la ansiedad, el primer paso es reconocerla como un mensaje biológico de protección. Eso solo — sin hacer nada más — ya reduce la intensidad del síntoma.</p>
+    <div style="margin-top:1.2rem;padding:1rem;background:rgba(255,255,255,.03);border-radius:12px;border:1px solid var(--border);">
+      <p style="font-size:.85rem;"><strong style="color:var(--text);">Frase de re-etiquetado:</strong><br>"Esto no es un ataque. Es mi biología intentando salvarme. Estoy sintiendo la activación de mi sistema de protección."</p>
+    </div>
+  </div>
+</section>
 
-    <script>
-        // Visuals
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, state = 'alert';
+<!-- ═══ DHS ═══ -->
+<section id="dhs">
+  <div class="ch-num reveal-el">Capítulo 1.3 · El Origen</div>
+  <h2 class="ch-header reveal-el">El Shock Biológico<br>(DHS)</h2>
+  <p class="ch-sub reveal-el">¿Quién encendió la alarma por primera vez? La respuesta está en un momento específico de tu historia.</p>
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+  <div class="card reveal-el">
+    <div class="card-label">¿Qué es el DHS?</div>
+    <h3>La "impresora" que activó tu programa</h3>
+    <p>El Dirk Hamer Syndrom es el momento exacto en que tu sistema registró una experiencia de gran impacto emocional como una amenaza existencial. No es estrés cotidiano — es el instante preciso en que tu biología grabó a fuego: <em style="color:var(--text);">"estoy en peligro"</em>.</p>
+    <div class="dhs-grid">
+      <div class="dhs-card">
+        <div class="dhs-i">D</div>
+        <h4>Dramático</h4>
+        <p>Lo viviste como una amenaza real a tu vida, valor o territorio.</p>
+      </div>
+      <div class="dhs-card">
+        <div class="dhs-i">I</div>
+        <h4>Inesperado</h4>
+        <p>Te tomó por sorpresa. La amígdala no pudo procesarlo racionalmente.</p>
+      </div>
+      <div class="dhs-card">
+        <div class="dhs-i">A</div>
+        <h4>Aislado</h4>
+        <p>Lo sentiste y gestionaste solo. Nadie pudo ayudarte en ese momento.</p>
+      </div>
+      <div class="dhs-card">
+        <div class="dhs-i">S</div>
+        <h4>Sin solución</h4>
+        <p>Tu mente no encontró salida lógica. La alarma quedó encendida.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal-el">
+    <div class="card-label">Ejemplo real</div>
+    <h3>El DHS en acción</h3>
+    <blockquote>De niño, presenciás una fuerte discusión entre tus padres por dinero. Es <strong>dramático</strong> (miedo profundo), <strong>inesperado</strong> (un día normal que colapsa) y lo gestionás <strong>solo</strong>, escondido e incapaz de intervenir. Tu biología imprime: <em>"el dinero es peligro, debo estar siempre alerta."</em></blockquote>
+    <p>Años después, a los 35, una pequeña deuda dispara un ataque de pánico desproporcionado. La deuda es solo el <strong style="color:var(--alert);">desencadenante</strong>. El verdadero problema es la <strong style="color:var(--calm);">impronta biológica</strong> de aquel DHS a los 8 años.</p>
+    <div style="margin-top:1.2rem;display:flex;gap:.8rem;flex-wrap:wrap;">
+      <span style="font-size:.8rem;padding:5px 12px;border-radius:100px;border:1px solid rgba(232,64,64,.3);color:var(--alert);">⚡ Conflicto Programante (origen)</span>
+      <span style="font-size:.8rem;padding:5px 12px;border-radius:100px;border:1px solid rgba(14,207,156,.3);color:var(--calm);">→ Conflicto Desencadenante (gatillo)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PERFILES ═══ -->
+<section id="perfiles">
+  <div class="ch-num reveal-el">Capítulo 2.1 · Los 3 Perfiles</div>
+  <h2 class="ch-header reveal-el">Dime qué sentís<br>y te diré qué temés</h2>
+  <p class="ch-sub reveal-el">Cada tipo de miedo activa áreas cerebrales y órganos específicos. Tu síntoma es preciso, no azaroso.</p>
+
+  <div class="card reveal-el">
+    <div class="profiles-tabs">
+      <button class="ptab active" onclick="showProfile('frontal',this)">Amenaza Frontal</button>
+      <button class="ptab" onclick="showProfile('territorial',this)">Territorial</button>
+      <button class="ptab" onclick="showProfile('derrumbe',this)">Derrumbamiento</button>
+    </div>
+
+    <div class="profile-panel active" id="pf-frontal">
+      <div class="profile-header">Perfil "Amenaza Frontal"</div>
+      <div class="profile-body-area">Zona: Cuello · Tiroides · Retina</div>
+      <div class="profile-thought">"Hay un peligro inminente frente a mí y estoy atado de manos. No sé qué hacer."</div>
+      <p style="font-size:.85rem;color:var(--muted);">Miedo a algo que "se te viene encima" con sensación de falta de recursos para afrontarlo. Se manifiesta como parálisis, manos frías o visión de túnel.</p>
+      <div class="symptom-tags">
+        <span class="stag">Parálisis</span><span class="stag">Manos frías</span>
+        <span class="stag">Visión de túnel</span><span class="stag">Examen / deuda</span>
+      </div>
+    </div>
+
+    <div class="profile-panel" id="pf-territorial">
+      <div class="profile-header">Perfil "Territorial"</div>
+      <div class="profile-body-area">Zona: Pecho · Bronquios · Coronarias</div>
+      <div class="profile-thought">"Me están quitando lo que es mío. No tengo mi lugar. Alguien se metió en mi terreno."</div>
+      <p style="font-size:.85rem;color:var(--muted);">La más física de las ansiedades. Se localiza en el pecho y puede sentirse como opresión, falta de aire o "patada en el esternón". Tu biología ensancha los bronquios para maximizar el oxígeno en la pelea.</p>
+      <div class="symptom-tags">
+        <span class="stag">Opresión en pecho</span><span class="stag">Falta de aire</span>
+        <span class="stag">Conflictos de pareja</span><span class="stag">Disputas laborales</span>
+      </div>
+    </div>
+
+    <div class="profile-panel" id="pf-derrumbe">
+      <div class="profile-header">Perfil "Derrumbamiento Existencial"</div>
+      <div class="profile-body-area">Zona: Riñones · Túbulos Colectores</div>
+      <div class="profile-thought">"He perdido todos mis referentes. Estoy solo contra el mundo. Mi existencia misma corre peligro."</div>
+      <p style="font-size:.85rem;color:var(--muted);">El más visceral. Como un pez fuera del agua, tu cuerpo retiene líquidos para sobrevivir. Esto genera hinchazón, aumento de peso inexplicable y una sed de aire desesperada. Se activa ante ruina, abandono o pérdida total.</p>
+      <div class="symptom-tags">
+        <span class="stag">Retención de líquidos</span><span class="stag">Pánico existencial</span>
+        <span class="stag">Sensación de ahogo</span><span class="stag">Ataques de pánico</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal-el">
+    <div class="card-label">La tormenta perfecta del pánico</div>
+    <h3>El Síndrome: cuando dos conflictos se combinan</h3>
+    <p>El Dr. Hamer denominó "El Síndrome" a la combinación del conflicto de miedo (territorial) con el conflicto de los túbulos colectores (existencial). El resultado es un ataque de pánico.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.2rem;">
+      <div style="padding:1rem;background:rgba(232,64,64,.06);border:1px solid rgba(232,64,64,.2);border-radius:12px;font-size:.82rem;">
+        <div style="color:var(--alert);font-weight:700;margin-bottom:.4rem;">El Miedo dice:</div>
+        "¡Corré! ¡Escapá de la amenaza!"
+      </div>
+      <div style="padding:1rem;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:12px;font-size:.82rem;">
+        <div style="color:var(--blue);font-weight:700;margin-bottom:.4rem;">El Riñón dice:</div>
+        "¡No te muevas! Conservá energía y agua."
+      </div>
+    </div>
+    <p style="margin-top:1rem;font-size:.85rem;color:var(--muted);">Tu cuerpo recibe señales contradictorias de huir y de inmovilizarse. Eso — y no otra cosa — es el ataque de pánico.</p>
+  </div>
+</section>
+
+<!-- ═══ MÉTODO 369 ═══ -->
+<section id="metodo">
+  <div class="ch-num reveal-el">Capítulo 3 · La Ruta de Salida</div>
+  <h2 class="ch-header reveal-el">El Método 369:<br>hackeando la alerta</h2>
+  <p class="ch-sub reveal-el">El Nervio Vago es el freno natural de tu sistema nervioso. Esta técnica de respiración lo activa de forma directa e inmediata.</p>
+
+  <div class="card reveal-el">
+    <div class="card-label">El Nervio Vago</div>
+    <h3>La autopista neural de la calma</h3>
+    <p>Es el nervio más largo del cuerpo — conecta el cerebro con el corazón, los pulmones y el intestino. Al controlarlo a través de la respiración, forzás al sistema nervioso a pasar de Simpaticotonía a Vagotonía de forma casi inmediata.</p>
+    <blockquote>"Al respirar rítmicamente, no solo 'respirás' — le enviás señales directas al Nervio Vago para que frene la alarma."</blockquote>
+  </div>
+
+  <div class="card reveal-el breath-section">
+    <div class="card-label">Ejercicio guiado</div>
+    <h3>Respiración 3 · 6 · 9</h3>
+    <p>Completá 3 ciclos completos. Tu ritmo cardíaco le comunicará al cerebro: <em style="color:var(--calm);">"la amenaza pasó, estamos seguros."</em></p>
+    <div class="breath-ring">
+      <div class="breath-ball" id="bball"></div>
+      <div class="breath-count" id="bcount"></div>
+    </div>
+    <div class="breath-phase" id="bphase">—</div>
+    <div class="breath-cycles" id="bcycles">Ciclos completados: 0 / 3</div>
+    <button class="btn btn-primary" id="b-start" onclick="startBreath()">Iniciar respiración</button>
+    <button class="btn btn-ghost" id="b-stop" style="display:none;margin-left:.8rem;" onclick="stopBreath()">Detener</button>
+    <div class="breath-done" id="bdone">
+      ✦ Tu Nervio Vago fue activado. Tu biología recibió el mensaje: estás a salvo.
+    </div>
+  </div>
+
+  <div class="card reveal-el">
+    <div class="card-label">Protocolo completo de 18 minutos</div>
+    <h3>Las 3 fases del Método 369</h3>
+    <div class="proto-steps">
+      <div class="proto-step reveal-el">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Respiración Abdominal (3 min)</h4>
+          <p>Activar el Nervio Vago. Inhala en 4, exhala en 6. La mano en el pecho no debe moverse — solo el abdomen sube y baja.</p>
+        </div>
+      </div>
+      <div class="proto-step reveal-el">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h4>Introspección Guiada (6 min)</h4>
+          <p>Mantener el ritmo y llevar la atención a la emoción que te angustia. Preguntarte: "¿Qué tengo que perder si resuelvo esto?"</p>
+        </div>
+      </div>
+      <div class="proto-step reveal-el">
+        <div class="step-num">9</div>
+        <div class="step-body">
+          <h4>Recableado Biológico (9 min)</h4>
+          <p>Visualizar el conflicto programante totalmente resuelto. Repetir la frase opuesta al Resentir: "Estoy a salvo y tengo los recursos para gestionar esta situación."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ACCIÓN COHERENTE ═══ -->
+<section id="accion">
+  <div class="ch-num reveal-el">Capítulo 4 · Acción Coherente</div>
+  <h2 class="ch-header reveal-el">La biología entiende<br>de evidencias</h2>
+  <p class="ch-sub reveal-el">Pensar positivo no alcanza. Tu biología necesita hechos concretos y coherentes para desactivar la alarma.</p>
+
+  <div class="card reveal-el">
+    <div class="card-label">El principio de acción opuesta</div>
+    <h3>¿Qué es la Acción Coherente?</h3>
+    <p>Tu programa de ansiedad te ordena: <em style="color:var(--alert);">"¡No te muevas! ¡Estás en peligro!"</em> La Acción Coherente es ejecutar exactamente lo contrario — un movimiento físico, una decisión o una postura que le demuestre a tu sistema nervioso que el peligro ya terminó.</p>
+    <div style="margin-top:1.5rem;">
+      <div style="padding:1rem;background:rgba(255,255,255,.03);border-radius:12px;margin-bottom:.8rem;border:1px solid var(--border);">
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:.3rem;">Si tu Resentir es:</p>
+        <p style="font-size:.85rem;font-style:italic;">"Tengo que estar siempre vigilando o perderé mi trabajo/pareja."</p>
+        <p style="font-size:.8rem;color:var(--calm);margin-top:.5rem;">→ Acción: Decir "no" a algo que te drena. Demostrás que sos dueño de tu espacio sin luchar.</p>
+      </div>
+      <div style="padding:1rem;background:rgba(255,255,255,.03);border-radius:12px;margin-bottom:.8rem;border:1px solid var(--border);">
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:.3rem;">Si tu Resentir es:</p>
+        <p style="font-size:.85rem;font-style:italic;">"He perdido todos mis referentes. Estoy solo."</p>
+        <p style="font-size:.8rem;color:var(--calm);margin-top:.5rem;">→ Acción: Organizar tus finanzas más pequeñas o redecorar un rincón de tu casa. Creás un nuevo territorio seguro.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal-el">
+    <div class="card-label">El contrato de coherencia</div>
+    <h3>Tu compromiso biológico</h3>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:1.2rem;">Escribí la acción más pequeña y concreta que contradiga directamente tu resentir. No tiene que ser grande — solo real.</p>
+    <div class="commit-area" id="commit-area">
+      <textarea class="commit-input" id="commit-text" placeholder="Yo me comprometo a... (ej: hablar con esa persona que evité esta semana, abrir el extracto bancario que ignoré hace 3 semanas)"></textarea>
+      <button class="btn btn-primary" style="width:100%;margin-top:.8rem;border-radius:12px;" onclick="signCommit()">Firmar mi compromiso biológico</button>
+    </div>
+    <div class="commit-signed" id="commit-signed">
+      <p>✦ Compromiso registrado.<br>Cada paso que dás en calma graba en tus células la creencia de seguridad.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MANUAL BIOLÓGICO ═══ -->
+<section id="manual">
+  <div class="ch-num reveal-el">Manual · Conceptos Clave</div>
+  <h2 class="ch-header reveal-el">Glosario biológico<br>del método</h2>
+  <p class="ch-sub reveal-el">Todo lo que tu cuerpo intenta decirte, en el lenguaje que tu biología entiende.</p>
+
+  <div class="card reveal-el">
+    <div class="acc-wrap" id="accordion">
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          La Vagotonía: señales de que sanás
+          <div class="acc-icon">+</div>
+        </button>
+        <div class="acc-body">
+          Cuando lográs resolver el conflicto biológico, tu sistema nervioso pasa abruptamente a Vagotonía (fase de reparación). No esperes euforia inmediata — las señales son: <strong>fatiga reparadora</strong> (necesidad profunda de dormir, tu cuerpo finalmente puede "bajar la guardia"), <strong>fenómeno de los líquidos</strong> (poliuria: orinar mucho sin tomar más agua — tu cuerpo suelta lo que retuvo) y <strong>la "gripe del alma"</strong> (dolores leves, inflamación — tu cuerpo genera un edema de reparación). No es una recaída. Es la curación en marcha.
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          La Epicrisis: la última sacudida
+          <div class="acc-icon">+</div>
+        </button>
+        <div class="acc-body">
+          Justo antes de la curación total, ocurre la Epicrisis: un pico breve y agudo donde los síntomas regresan de golpe — un ataque de pánico de 30 segundos, un sudor frío repentino, un temblor. Es el cerebro expulsando el edema cerebral para volver a la normalidad. Si esto pasa, <strong>sonreí</strong>. Es la confirmación de que el programa biológico se está cerrando para siempre. La última tormenta antes de la calma definitiva.
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          El Resentir Biológico
+          <div class="acc-icon">+</div>
+        </button>
+        <div class="acc-body">
+          La Biodescodificación llama "Resentir" a la frase emocional que resume tu shock (DHS). Es la creencia que tu biología adoptó como ley de vida. Ejemplos: <em>"Tengo que estar siempre vigilando porque en cualquier momento me quitan mi puesto."</em> o <em>"Debo retener todo lo que tengo porque si no, moriré en la calle."</em> Identificar tu Resentir es el primer paso para desactivar el programa.
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          Programante vs Desencadenante
+          <div class="acc-icon">+</div>
+        </button>
+        <div class="acc-body">
+          Imaginá que tenés alergia al polen. Hace 20 años tuviste una experiencia traumática en un campo de flores (<strong>Programante</strong>) — tu sistema asoció "Polen = Peligro". Hoy, olés una flor y estornudás (<strong>Desencadenante</strong>). Con la ansiedad pasa igual. El error más común es gastar toda tu energía arreglando el desencadenante (cambiar de trabajo, evitar el tráfico, controlar a la pareja) sin sanar el programante. Si no sanás el origen, tu cerebro encontrará otro desencadenante mañana.
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          Protocolo de Pertenencia (Conflicto del Refugiado)
+          <div class="acc-icon">+</div>
+        </button>
+        <div class="acc-body">
+          Para desactivar el programa de los Túbulos Colectores: (1) <strong>Baño de inmersión</strong> — el agua tibia sobre la piel envía una señal arcaica de seguridad, le dice a tu biología que "volviste al océano". (2) <strong>Afirmación de referencia</strong>: "Tengo un lugar. Este es mi territorio. Estoy a salvo aquí. Pertenezco." (3) <strong>Identifiicá tus referentes</strong> — al menos 3 cosas que NO perdiste. (4) <strong>Visualización del retorno</strong> — imaginá que tus riñones se relajan y abren, soltando la tensión acumulada.
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          El Acto Psicomágico
+          <div class="acc-icon">+</div>
+        </button>
+        <div class="acc-body">
+          Tu cerebro inconsciente no distingue entre un hecho real y un acto simbólico realizado con intención. El Acto Psicomágico "engaña" a la biología para decirle que el conflicto terminó. Proceso: (1) Identificar el DHS programante. (2) Escribir una carta sin enviar a la persona/situación del shock — con la emoción primaria, la necesidad no cubierta y la orden de liberación. (3) <strong>Quemar o enterrar</strong> la carta. El fuego o la tierra transmutan simbólicamente el estrés residual. (4) Sellar con el ciclo 369 de 9 minutos.
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          Reglas de Oro del proceso
+          <div class="acc-icon">+</div>
+        </button>
+        <div class="acc-body">
+          <strong>Cero Juicio:</strong> Si un día fallás, no te castigués. El castigo genera estrés (Simpaticotonía). Solo retomá al día siguiente.<br><br>
+          <strong>Hidratación Consciente:</strong> El sistema nervioso es eléctrico. Bebé agua para que la señal de calma viaje sin interferencias.<br><br>
+          <strong>Observá tus Sueños:</strong> Tu inconsciente aprovechará la Vagotonía para procesar memorias antiguas. Tené un papel cerca para anotar lo que recordés al despertar.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 21 DÍAS ═══ -->
+<section id="dias">
+  <div class="ch-num reveal-el">Bono 3 · Diario de Coherencia</div>
+  <h2 class="ch-header reveal-el">21 días para<br>reprogramar tu sistema</h2>
+  <p class="ch-sub reveal-el">La biología no cambia solo por entender la teoría. Cambia por la repetición y la coherencia.</p>
+
+  <div class="card reveal-el">
+    <div class="card-label">Tu rutina innegociable</div>
+    <h3>El método diario</h3>
+    <div class="proto-steps">
+      <div class="proto-step reveal-el">
+        <div class="step-num" style="color:var(--calm);">AM</div>
+        <div class="step-body">
+          <h4>Mañana: Activación del Nervio Vago</h4>
+          <p>Realizá 9 ciclos de respiración 3-6-9 <strong>antes</strong> de ver el celular. Afirmación: "Hoy informo a mi cuerpo que estoy a salvo en mi presente."</p>
+        </div>
+      </div>
+      <div class="proto-step reveal-el">
+        <div class="step-num" style="color:var(--calm);">PM</div>
+        <div class="step-body">
+          <h4>Tarde: Check-point de Alerta</h4>
+          <p>Una pausa de 1 minuto. Observá si hay tensión en mandíbula u hombros. Si detectás alerta, hacé 3 respiraciones profundas.</p>
+        </div>
+      </div>
+      <div class="proto-step reveal-el">
+        <div class="step-num" style="color:var(--calm);">🌙</div>
+        <div class="step-body">
+          <h4>Noche: Cierre de Coherencia</h4>
+          <p>Identificá tu Acción Coherente del día. Registrá tu nivel de paz del 1 al 10.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal-el">
+    <div class="card-label">Tu rastreador de 21 días</div>
+    <h3>Seguimiento de práctica</h3>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem;">Tocá cada día para marcarlo como completado.</p>
+    <p class="week-label">Semana 1 · Desmantelando la Alarma</p>
+    <div class="week-grid" id="wg1"></div>
+    <p class="week-label">Semana 2 · Instalando la Vagotonía</p>
+    <div class="week-grid" id="wg2"></div>
+    <p class="week-label">Semana 3 · Consolidación de la Paz</p>
+    <div class="week-grid" id="wg3"></div>
+    <div id="weeks-complete" style="display:none;margin-top:1rem;padding:.8rem;background:rgba(14,207,156,.08);border:1px solid rgba(14,207,156,.2);border-radius:10px;font-size:.85rem;color:var(--calm);text-align:center;">
+      ✦ Completaste los 21 días. Tu biología ha aprendido un nuevo lenguaje: la paz.
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CIERRE ═══ -->
+<section id="cierre">
+  <div class="ch-num reveal-el">Final · La Paz Comienza Ahora</div>
+  <div class="card reveal-el">
+    <div class="card-label">Tu hoja de ruta</div>
+    <h3>El ciclo completo del Método 369</h3>
+    <div class="route-items">
+      <div class="route-item">
+        <div class="route-dot">01</div>
+        <div>
+          <h4>Ebook · Entendiste el porqué</h4>
+          <p>La ansiedad es un programa biológico sensato, no un defecto.</p>
+        </div>
+      </div>
+      <div class="route-item">
+        <div class="route-dot">B1</div>
+        <div>
+          <h4>Bono 1 · Guía SOS de Emergencia</h4>
+          <p>Tu ancla para cuando la alarma se activa. 5 pasos para informarle a tu biología que el peligro pasó.</p>
+        </div>
+      </div>
+      <div class="route-item">
+        <div class="route-dot">B2</div>
+        <div>
+          <h4>Bono 2 · Protocolo de Liberación Bio-Emocional</h4>
+          <p>El Acto Psicomágico para desprogramar el DHS original. El corazón de la sanación profunda.</p>
+        </div>
+      </div>
+      <div class="route-item">
+        <div class="route-dot">B3</div>
+        <div>
+          <h4>Bono 3 · Diario de Coherencia Biológica</h4>
+          <p>21 días para que la Vagotonía se convierta en tu estado base.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card reveal-el" style="text-align:center;">
+    <div id="tw-text"></div>
+    <div class="divider" style="margin:1.5rem auto;"></div>
+    <p style="font-size:.8rem;color:var(--muted);">"La constancia es la lengua que tu biología entiende mejor."</p>
+  </div>
+
+  <div class="disclaimer reveal-el">
+    <strong>Nota importante:</strong> Este contenido es una herramienta de empoderamiento biológico y apoyo educativo. Complementa pero no reemplaza el diagnóstico, tratamiento o asesoramiento de un profesional de la salud. Si experimentás síntomas persistentes o una crisis severa, consultá siempre con tu médico o un especialista cualificado.
+  </div>
+</section>
+
+<!-- SOS OVERLAY -->
+<div id="sos-overlay">
+  <p style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--calm);margin-bottom:.5rem;">Modo SOS · Nervio Vago</p>
+  <h2 style="font-family:var(--font-display);font-size:1.8rem;font-weight:800;margin-bottom:.5rem;">Respiración de emergencia</h2>
+  <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Seguí el ritmo del círculo.<br>Tu biología va a recibir el mensaje.</p>
+  <div class="sos-circle">
+    <div class="sos-inner" id="sos-inner"></div>
+    <div class="sos-num" id="sos-num">—</div>
+  </div>
+  <div id="sos-phase" style="font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--calm);min-height:1.5em;margin-bottom:1rem;"></div>
+  <button class="btn btn-ghost" id="sos-start" onclick="startSos()">Comenzar</button>
+  <button class="btn btn-ghost" style="margin-top:.8rem;" onclick="closeSos()">Cerrar</button>
+  <p style="font-size:.72rem;color:var(--muted);margin-top:1.5rem;max-width:300px;">Inhala 4 · Retén 2 · Exhala 8<br>Repetí hasta sentir calma.</p>
+</div>
+
+<button id="sos-btn" onclick="openSos()">SOS</button>
+
+<script>
+// ── CANVAS BACKGROUND ──
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [], state = 'alert';
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initParticles() {
+  particles = [];
+  const n = Math.min(40, Math.floor(W * H / 30000));
+  for (let i = 0; i < n; i++) {
+    particles.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.5 + .5,
+      vx: (Math.random() - .5) * .6,
+      vy: (Math.random() - .5) * .6,
+      connections: []
+    });
+  }
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, W, H);
+  const alertC = '232,64,64', calmC = '14,207,156';
+  const c = state === 'alert' ? alertC : calmC;
+  const speed = state === 'alert' ? 1.4 : .5;
+
+  particles.forEach(p => {
+    p.x += p.vx * speed;
+    p.y += p.vy * speed;
+    if (p.x < 0 || p.x > W) p.vx *= -1;
+    if (p.y < 0 || p.y > H) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${c},.5)`;
+    ctx.fill();
+  });
+
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(${c},${.15 * (1 - d / 120)})`;
+        ctx.lineWidth = .5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+
+// ── SCROLL ──
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  document.getElementById('pbar').style.width = (scrolled * 100) + '%';
+
+  const threshold = .42;
+  const isCalm = scrolled > threshold;
+  if (isCalm && state === 'alert') {
+    state = 'calm';
+    document.documentElement.style.setProperty('--accent', 'var(--calm)');
+    document.getElementById('state-pill').textContent = 'Vagotonía';
+    document.getElementById('state-pill').style.borderColor = 'var(--calm)';
+    document.getElementById('state-pill').style.color = 'var(--calm)';
+    document.getElementById('hero-orb').style.background = 'var(--calm)';
+    document.getElementById('hero-orb').style.boxShadow = '0 0 16px var(--calm)';
+    document.getElementById('hero-state-label').textContent = 'Estado actual: Vagotonía';
+    document.getElementById('hero-em').style.color = 'var(--calm)';
+  } else if (!isCalm && state === 'calm') {
+    state = 'alert';
+    document.documentElement.style.setProperty('--accent', 'var(--alert)');
+    document.getElementById('state-pill').textContent = 'Simpaticotonía';
+    document.getElementById('state-pill').style.borderColor = 'var(--alert)';
+    document.getElementById('state-pill').style.color = 'var(--alert)';
+    document.getElementById('hero-orb').style.background = 'var(--alert)';
+    document.getElementById('hero-orb').style.boxShadow = '0 0 16px var(--alert)';
+    document.getElementById('hero-state-label').textContent = 'Estado actual: Simpaticotonía';
+    document.getElementById('hero-em').style.color = 'var(--alert)';
+  }
+
+  document.querySelectorAll('.reveal-el').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight * .88) {
+      el.classList.add('vis');
+    }
+  });
+});
+
+function scrollTo(sel) {
+  document.querySelector(sel).scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── QUIZ ──
+const quizData = [
+  {
+    q: "¿Dónde sentís más fuerte la ansiedad en tu cuerpo?",
+    opts: [
+      { t: "En el pecho — opresión, falta de aire", p: "territorial" },
+      { t: "En el cuello o la garganta — nudo, rigidez", p: "frontal" },
+      { t: "En el estómago — náuseas, vacío, retortijones", p: "derrumbe" },
+      { t: "En la cabeza — zumbidos, presión, visión de túnel", p: "frontal" }
+    ]
+  },
+  {
+    q: "¿Qué frase resuena más con tu experiencia?",
+    opts: [
+      { t: "\"Debo estar siempre alerta o pierdo lo que tengo\"", p: "territorial" },
+      { t: "\"Algo malo va a pasar y no puedo controlarlo\"", p: "frontal" },
+      { t: "\"Siento que el suelo se abre bajo mis pies\"", p: "derrumbe" },
+      { t: "\"Me cuesta respirar cuando el estrés aparece\"", p: "territorial" }
+    ]
+  },
+  {
+    q: "¿Cuándo empezó o se intensificó tu ansiedad?",
+    opts: [
+      { t: "Tras una pérdida, separación o cambio brusco de vida", p: "derrumbe" },
+      { t: "Cuando sentí que alguien invadía mi espacio o me desplazó", p: "territorial" },
+      { t: "Ante una situación que no podía resolver ni controlar", p: "frontal" },
+      { t: "Siempre estuvo, desde que tengo memoria", p: "derrumbe" }
+    ]
+  }
+];
+
+let qIndex = 0;
+const qScores = { frontal: 0, territorial: 0, derrumbe: 0 };
+let qAnswered = 0;
+
+function renderQuiz() {
+  const cont = document.getElementById('quiz-container');
+  const pct = (qIndex / quizData.length) * 100;
+  document.getElementById('qpfill').style.width = pct + '%';
+
+  if (qIndex >= quizData.length) {
+    showQuizResult();
+    return;
+  }
+
+  const q = quizData[qIndex];
+  cont.innerHTML = `
+    <div class="quiz-step-label">Pregunta ${qIndex + 1} de ${quizData.length}</div>
+    <div class="quiz-q">${q.q}</div>
+    ${q.opts.map((o, i) => `<button class="q-opt" onclick="selectOpt(${i})">${o.t}</button>`).join('')}
+  `;
+}
+
+function selectOpt(i) {
+  const q = quizData[qIndex];
+  qScores[q.opts[i].p]++;
+  document.querySelectorAll('.q-opt')[i].classList.add('selected');
+  setTimeout(() => { qIndex++; renderQuiz(); }, 400);
+}
+
+function showQuizResult() {
+  document.getElementById('qpfill').style.width = '100%';
+  const top = Object.entries(qScores).sort((a, b) => b[1] - a[1])[0][0];
+  const profiles = {
+    frontal: { name: "Perfil Amenaza Frontal", desc: "Tu biología está respondiendo a algo que se siente inminente e inevitable. Tu sistema percibe un peligro frente a vos para el que no tiene recursos. El Método 369 activa el freno de mano de esa alarma.", action: "Ir a perfiles biológicos" },
+    territorial: { name: "Perfil Territorial", desc: "Tu sistema nervioso está defendiendo tu espacio vital — tu trabajo, tu pareja, tu lugar en el mundo. Cada síntoma en el pecho es tu biología ensanchando los bronquios para la pelea. El primer paso es reconocer qué territorio sentís amenazado.", action: "Ver mi perfil completo" },
+    derrumbe: { name: "Perfil Derrumbamiento Existencial", desc: "Tu cuerpo cree que lo perdiste todo o está a punto de perderlo. Está reteniendo recursos (incluso líquidos) para sobrevivir. Este es el programa biológico más arcaico y también el que más se alivia con el Protocolo de Pertenencia.", action: "Ver mi perfil completo" }
+  };
+  const pr = profiles[top];
+  document.getElementById('quiz-container').innerHTML = `
+    <div class="result-card show">
+      <div class="result-title">✦ ${pr.name}</div>
+      <div class="result-desc">${pr.desc}</div>
+      <div class="result-action" onclick="document.querySelector('#perfiles').scrollIntoView({behavior:'smooth'})">${pr.action} →</div>
+    </div>
+    <button class="btn btn-ghost" style="width:100%;margin-top:1rem;border-radius:12px;font-size:.8rem;" onclick="resetQuiz()">Repetir diagnóstico</button>
+  `;
+}
+
+function resetQuiz() {
+  qIndex = 0;
+  qScores.frontal = 0; qScores.territorial = 0; qScores.derrumbe = 0;
+  document.getElementById('qpfill').style.width = '0%';
+  renderQuiz();
+}
+
+// ── STATES TOGGLE ──
+function toggleStateCol(col) {
+  document.getElementById('col-sym').classList.toggle('active', col === 'sym');
+  document.getElementById('col-vag').classList.toggle('active', col === 'vag');
+}
+
+// ── NS VIZ ──
+const nsInfo = {
+  cerebro: "La amígdala graba el shock como 'botón de alarma'. Cada vez que algo se parece al evento original, activa la Simpaticotonía.",
+  psique: "La emoción intensa del shock (pánico, desvalorización, rabia) queda grabada como 'detonador' del circuito de miedo.",
+  organo: "El síntoma físico manifestado (taquicardia, tensión muscular, problemas digestivos) es la prueba visible del programa activo."
+};
+function showNsInfo(node) {
+  document.getElementById('ns-info').textContent = nsInfo[node];
+}
+
+// ── PROFILES ──
+function showProfile(id, btn) {
+  document.querySelectorAll('.profile-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  document.getElementById('pf-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── BREATHING 369 ──
+let breathInterval = null, breathCycles = 0;
+
+function startBreath() {
+  document.getElementById('b-start').style.display = 'none';
+  document.getElementById('b-stop').style.display = 'inline-block';
+  document.getElementById('bdone').style.display = 'none';
+  breathCycles = 0;
+  runBreathCycle();
+}
+
+function stopBreath() {
+  clearInterval(breathInterval);
+  breathInterval = null;
+  document.getElementById('b-start').style.display = 'inline-block';
+  document.getElementById('b-stop').style.display = 'none';
+  document.getElementById('bphase').textContent = '—';
+  document.getElementById('bcount').textContent = '';
+  document.getElementById('bball').style.transform = 'scale(1)';
+}
+
+function runBreathCycle() {
+  const phases = [
+    { label: 'Inhalá', dur: 3, scale: 4 },
+    { label: 'Retené', dur: 6, scale: 4 },
+    { label: 'Exhalá', dur: 9, scale: 1 }
+  ];
+  let pi = 0, t = 0;
+
+  function tick() {
+    const ph = phases[pi];
+    document.getElementById('bphase').textContent = ph.label;
+    document.getElementById('bcount').textContent = ph.dur - t;
+    const prog = t / ph.dur;
+    if (pi === 0) document.getElementById('bball').style.transform = `scale(${1 + prog * 3})`;
+    if (pi === 2) document.getElementById('bball').style.transform = `scale(${4 - prog * 3})`;
+
+    t++;
+    if (t > ph.dur) {
+      t = 0; pi++;
+      if (pi >= phases.length) {
+        pi = 0;
+        breathCycles++;
+        document.getElementById('bcycles').textContent = `Ciclos completados: ${breathCycles} / 3`;
+        if (breathCycles >= 3) {
+          clearInterval(breathInterval);
+          document.getElementById('bphase').textContent = '✦ Completado';
+          document.getElementById('bcount').textContent = '';
+          document.getElementById('b-stop').style.display = 'none';
+          document.getElementById('b-start').style.display = 'inline-block';
+          document.getElementById('b-start').textContent = 'Repetir';
+          document.getElementById('bdone').style.display = 'block';
+          return;
         }
-        window.onresize = resize;
-        resize();
+      }
+    }
+  }
+  tick();
+  breathInterval = setInterval(tick, 1000);
+}
 
-        function animate() {
-            ctx.fillStyle = 'rgba(5, 8, 15, 0.1)';
-            ctx.fillRect(0,0,width,height);
-            ctx.fillStyle = state === 'alert' ? '#ff4d4d22' : '#00e67622';
-            for(let i=0; i<30; i++) {
-                ctx.beginPath();
-                ctx.arc(Math.random()*width, Math.random()*height, 2, 0, Math.PI*2);
-                ctx.fill();
-            }
-            requestAnimationFrame(animate);
-        }
-        animate();
+// ── ACCORDION ──
+function toggleAcc(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.acc-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
 
-        // Scroll
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => e.isIntersecting && e.target.classList.add('visible'));
-        }, {threshold: 0.1});
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+// ── COMMIT ──
+function signCommit() {
+  const txt = document.getElementById('commit-text').value.trim();
+  if (!txt) return;
+  localStorage.setItem('m369_commit', txt);
+  document.getElementById('commit-area').style.display = 'none';
+  document.getElementById('commit-signed').style.display = 'block';
+}
 
-        // Breathing Logic
-        let breathing = false, timer;
-        function toggleBreathing() {
-            const btn = document.getElementById('btn-369');
-            const stateText = document.getElementById('state-text');
-            const stateBox = document.getElementById('global-state');
-            
-            if(!breathing) {
-                breathing = true;
-                state = 'calm';
-                btn.textContent = "Detener";
-                btn.style.background = "#333"; btn.style.color = "#fff";
-                stateText.textContent = "Vagotonía";
-                stateBox.classList.add('calm');
-                startCycle();
-            } else {
-                location.reload(); // Simple reset
-            }
-        }
+// Load saved commit
+const saved = localStorage.getItem('m369_commit');
+if (saved) {
+  document.getElementById('commit-text').value = saved;
+}
 
-        function startCycle() {
-            const phaseEl = document.getElementById('b-phase');
-            const timerEl = document.getElementById('b-timer');
-            const circle = document.getElementById('b-circle-bg');
-            let t = 0;
+// ── 21 DAYS ──
+function buildWeeks() {
+  const stored = JSON.parse(localStorage.getItem('m369_days') || '{}');
+  [1,2,3].forEach(w => {
+    const grid = document.getElementById('wg' + w);
+    for (let d = 1; d <= 7; d++) {
+      const day = (w - 1) * 7 + d;
+      const dot = document.createElement('div');
+      dot.className = 'day-dot' + (stored[day] ? ' done' : '');
+      dot.textContent = day;
+      dot.onclick = () => toggleDay(day, dot);
+      grid.appendChild(dot);
+    }
+  });
+  checkAllDays(stored);
+}
 
-            const run = () => {
-                if(t < 3) { // Inhala
-                    phaseEl.textContent = "Inhala";
-                    timerEl.textContent = 3 - t;
-                    circle.style.transform = `scale(${1 + (t+1)*0.5})`;
-                    updateBadges('inhala');
-                } else if(t < 9) { // Reten
-                    phaseEl.textContent = "Retén";
-                    timerEl.textContent = 9 - t;
-                    updateBadges('reten');
-                } else if(t < 18) { // Exhala
-                    phaseEl.textContent = "Exhala";
-                    timerEl.textContent = 18 - t;
-                    circle.style.transform = `scale(${2.5 - (t-8)*0.15})`;
-                    updateBadges('exhala');
-                }
-                t++;
-                if(t >= 18) t = 0;
-            };
-            run();
-            timer = setInterval(run, 1000);
-        }
+function toggleDay(day, dot) {
+  const stored = JSON.parse(localStorage.getItem('m369_days') || '{}');
+  stored[day] = !stored[day];
+  dot.classList.toggle('done', stored[day]);
+  localStorage.setItem('m369_days', JSON.stringify(stored));
+  checkAllDays(stored);
+}
 
-        function updateBadges(p) {
-            document.querySelectorAll('.step-badge').forEach(b => b.classList.remove('active'));
-            document.getElementById('badge-' + p).classList.add('active');
-        }
+function checkAllDays(stored) {
+  const done = Object.values(stored).filter(Boolean).length;
+  if (done >= 21) document.getElementById('weeks-complete').style.display = 'block';
+}
 
-        // Service Worker para PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                // Creamos un Service Worker básico en línea para permitir la instalación
-                const swCode = `
-                    self.addEventListener('install', e => self.skipWaiting());
-                    self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));
-                `;
-                const blob = new Blob([swCode], {type: 'text/javascript'});
-                const url = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(url).catch(() => {
-                    console.log("PWA: Registro SW saltado en modo preview.");
-                });
-            });
-        }
-    </script>
+// ── TYPEWRITER ──
+const twLines = [
+  "La ansiedad terminó.",
+  "La paz comienza ahora.",
+  "Tu biología tiene la capacidad innata",
+  "de volver a la calma.",
+  "La clave estaba en descifrar su lenguaje."
+];
+
+function startTypewriter() {
+  const container = document.getElementById('tw-text');
+  container.innerHTML = twLines.map(l => `<div class="tw-line">${l}</div>`).join('');
+  const lines = container.querySelectorAll('.tw-line');
+  lines.forEach((l, i) => setTimeout(() => l.classList.add('tw-vis'), i * 600));
+}
+
+// ── SOS ──
+let sosInt = null, sosRunning = false;
+
+function openSos() {
+  document.getElementById('sos-overlay').classList.add('open');
+}
+
+function closeSos() {
+  document.getElementById('sos-overlay').classList.remove('open');
+  if (sosInt) { clearInterval(sosInt); sosInt = null; sosRunning = false; }
+  document.getElementById('sos-inner').style.transform = 'scale(1)';
+  document.getElementById('sos-num').textContent = '—';
+  document.getElementById('sos-phase').textContent = '';
+  document.getElementById('sos-start').style.display = 'inline-block';
+}
+
+function startSos() {
+  if (sosRunning) return;
+  sosRunning = true;
+  document.getElementById('sos-start').style.display = 'none';
+  const ph = [
+    { l: 'Inhalá', d: 4, s: 4 },
+    { l: 'Retené', d: 2, s: 4 },
+    { l: 'Exhalá', d: 8, s: 1 }
+  ];
+  let pi = 0, t = 0;
+  function tick() {
+    const p = ph[pi];
+    document.getElementById('sos-phase').textContent = p.l;
+    document.getElementById('sos-num').textContent = p.d - t;
+    const prog = t / p.d;
+    if (pi === 0) document.getElementById('sos-inner').style.transform = `scale(${1 + prog * 3})`;
+    if (pi === 2) document.getElementById('sos-inner').style.transform = `scale(${4 - prog * 3})`;
+    t++;
+    if (t > p.d) { t = 0; pi = (pi + 1) % 3; }
+  }
+  tick();
+  sosInt = setInterval(tick, 1000);
+}
+
+// ── INTERSECTION OBSERVER ──
+const ro = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('vis');
+      if (e.target.id === 'tw-text' || e.target.closest('#cierre')) {
+        setTimeout(startTypewriter, 300);
+      }
+    }
+  });
+}, { threshold: .15 });
+
+document.querySelectorAll('.reveal-el, .card, .ch-header, .ch-sub, .ch-num, .proto-step').forEach(el => ro.observe(el));
+
+// ── INIT ──
+resize();
+initParticles();
+drawParticles();
+renderQuiz();
+buildWeeks();
+window.addEventListener('resize', () => { resize(); initParticles(); });
+setTimeout(() => document.querySelectorAll('.reveal-el').forEach(el => {
+  if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('vis');
+}), 200);
+</script>
 </body>
 </html>
