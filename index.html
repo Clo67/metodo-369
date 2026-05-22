@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
-  <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#7c3aed">
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/metodo-369/service-worker.js');
-        });
-      }
-    </script>
-</head>   ← el código va justo antes de esta línea
 <head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#7c3aed">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/metodo-369/service-worker.js');
+      });
+    }
+  </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Método 369 | La Fórmula Biológica para Desactivar la Ansiedad</title>
@@ -680,7 +679,7 @@ blockquote { font-size: 1rem; }
 <canvas id="bg-canvas"></canvas>
 
 <nav>
-  <div class="logo" style="color:var(--text);">MÉTODO<span style="color:var(--calm);">369</span></div>
+  <div class="logo" style="color:var(--text);">MÉT<span style="color:var(--calm);">369</span></div>
   <div class="state-pill" id="state-pill">Simpaticotonía</div>
 </nav>
 
@@ -693,7 +692,7 @@ blockquote { font-size: 1rem; }
     <div class="state-orb" id="hero-orb"></div>
     <span class="state-label" id="hero-state-label">Estado actual: Simpaticotonía</span>
   </div>
-  <button class="btn btn-primary" onclick="scrollTo('#diagnostico')">Descubrí tu perfil biológico</button>
+  <button class="btn btn-primary" onclick="document.querySelector('#diagnostico').scrollIntoView({behavior:'smooth'})">Descubrí tu perfil biológico</button>
 </section>
 
 <!-- ═══ DIAGNÓSTICO ═══ -->
@@ -1563,6 +1562,37 @@ function startSos() {
   tick();
   sosInt = setInterval(tick, 1000);
 }
+
+// ── SCROLL: PROGRESS BAR + STATE PILL ──
+window.addEventListener('scroll', () => {
+  // Progress bar
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  document.getElementById('pbar').style.width = pct + '%';
+
+  // State pill: calm when past hero
+  const heroBottom = document.getElementById('hero').getBoundingClientRect().bottom;
+  const pill = document.getElementById('state-pill');
+  const orb = document.getElementById('hero-orb');
+  const label = document.getElementById('hero-state-label');
+  const em = document.getElementById('hero-em');
+  if (heroBottom < 0) {
+    pill.textContent = 'Vagotonía';
+    pill.style.borderColor = 'var(--calm)';
+    pill.style.color = 'var(--calm)';
+    if (orb) { orb.style.background = 'var(--calm)'; orb.style.boxShadow = '0 0 16px var(--calm)'; }
+    if (label) label.textContent = 'Estado actual: Vagotonía';
+    if (em) em.style.color = 'var(--calm)';
+  } else {
+    pill.textContent = 'Simpaticotonía';
+    pill.style.borderColor = 'var(--alert)';
+    pill.style.color = 'var(--alert)';
+    if (orb) { orb.style.background = 'var(--alert)'; orb.style.boxShadow = '0 0 16px var(--alert)'; }
+    if (label) label.textContent = 'Estado actual: Simpaticotonía';
+    if (em) em.style.color = 'var(--alert)';
+  }
+});
 
 // ── INTERSECTION OBSERVER ──
 const ro = new IntersectionObserver((entries) => {
